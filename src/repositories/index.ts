@@ -1,0 +1,12 @@
+export * from './audit-log.repository';
+export * from './auth-client.repository';
+// export * from './default-soft-crud.repository.base';
+export * from './refresh-token.repository';
+export * from './revoked-token.repository';
+export * from './role.repository';
+// export * from './soft-crud.repository.base';
+export * from './tenant.repository';
+export * from './user-credentials.repository';
+export * from './user-tenant-permission.repository';
+export * from './user-tenant.repository';
+export * from './user.repository';
