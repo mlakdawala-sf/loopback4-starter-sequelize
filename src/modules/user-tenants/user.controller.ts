@@ -11,7 +11,7 @@ import {
 } from '@loopback/rest';
 import {authenticate, STRATEGY} from 'loopback4-authentication';
 import {authorize} from 'loopback4-authorization';
-import {CountWithOptions, FindOptions, UpdateOptions} from 'sequelize/types';
+import {CountOptions, FindOptions, UpdateOptions} from 'sequelize/types';
 import {User} from '../../models';
 import {UserRepository, UserTenantRepository} from '../../repositories';
 import {PermissionKey} from '../auth/permission-key.enum';
@@ -65,7 +65,7 @@ export class UserController {
     },
   })
   async count(
-    @param.query.object('where') where?: CountWithOptions<User>,
+    @param.query.object('where') where?: CountOptions<User>,
   ): Promise<number> {
     return this.userRepository.count(where);
   }

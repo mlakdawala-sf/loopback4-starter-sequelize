@@ -1,5 +1,5 @@
 import {
-  CountWithOptions,
+  CountOptions,
   DestroyOptions,
   FindOptions,
   ModelCtor,
@@ -45,7 +45,7 @@ export abstract class DefaultCrudRepository<T extends Model<any, any>> {
     return this.entity.update(data, {where: {id}});
   }
 
-  count(where?: CountWithOptions<T>) {
+  count(where?: CountOptions<T>) {
     return this.entity.count(where);
   }
 

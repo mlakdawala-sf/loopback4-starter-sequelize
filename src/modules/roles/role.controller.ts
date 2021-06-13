@@ -2,7 +2,7 @@ import {CountSchema, repository} from '@loopback/repository';
 import {del, get, param, patch, post, requestBody} from '@loopback/rest';
 import {authenticate, STRATEGY} from 'loopback4-authentication';
 import {authorize} from 'loopback4-authorization';
-import {CountWithOptions, UpdateOptions} from 'sequelize/types';
+import {CountOptions, UpdateOptions} from 'sequelize/types';
 import {Role} from '../../models';
 import {RoleRepository} from '../../repositories';
 import {PermissionKey} from '../auth/permission-key.enum';
@@ -37,7 +37,7 @@ export class RoleController {
     },
   })
   async count(
-    @param.query.object('where') where?: CountWithOptions<Role>,
+    @param.query.object('where') where?: CountOptions<Role>,
   ): Promise<number> {
     return this.roleRepository.count(where);
   }

@@ -1,10 +1,10 @@
 import {Getter} from '@loopback/core';
 import {
+  CountOptions,
   CountWithOptions,
   DestroyOptions,
   FindOptions,
   IncludeOptions,
-  Op,
   UpdateOptions,
   WhereOptions,
 } from 'sequelize';
@@ -25,20 +25,18 @@ export abstract class SoftCrudRepository<
 
   find(filter?: FindOptions<T>) {
     if (!filter) {
-      return super.find();
-    } else if (!filter.where) {
-      return super.find(filter);
+      filter = {};
     }
-    // Filter out soft deleted entries
-    // this.addDeletedAndCaseInWhereClause(filter);
+    this.addDeletedAndCaseInWhereClause(filter);
     // Now call super
     return super.find(filter);
   }
 
   findOne(filter: FindOptions<T>) {
-    // Filter out soft deleted entries
-    // this.addDeletedAndCaseInWhereClause(filter);
-
+    if (!filter) {
+      filter = {};
+    }
+    this.addDeletedAndCaseInWhereClause(filter);
     // Now call super
     return super.findOne(filter);
   }
@@ -47,11 +45,11 @@ export abstract class SoftCrudRepository<
     return this.findOne({where: {id}});
   }
 
-  count(where?: CountWithOptions<T>) {
-    if (where) {
-      // this.addDeletedAndCaseInWhereClause(where);
+  count(where?: CountOptions<T>) {
+    if (!where) {
+      where = {};
     }
-
+    this.addDeletedAndCaseInWhereClause(where);
     // Now call super
     return super.count(where);
   }
@@ -103,7 +101,7 @@ export abstract class SoftCrudRepository<
     if (!this.getCurrentUser) {
       return undefined;
     }
-    let currentUser = await this.getCurrentUser();
+    const currentUser = await this.getCurrentUser();
     if (!currentUser || !currentUser.id) {
       return undefined;
     }
@@ -126,15 +124,12 @@ export abstract class SoftCrudRepository<
   }
 
   getDeletedWhereClause(
-    where?: WhereOptions<SoftDeleteEntity>,
-  ): WhereOptions<SoftDeleteEntity> {
+    where?: WhereOptions<SoftDeleteEntity> | CountWithOptions<SoftDeleteEntity>,
+  ) {
     if (!where) {
-      return {where: {deleted: false}};
+      return {deleted: false};
     }
-    return {
-      where: {
-        [Op.and]: [where, {deleted: false}],
-      },
-    };
+    where = {...where, deleted: false};
+    return where;
   }
 }

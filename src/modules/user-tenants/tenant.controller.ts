@@ -2,7 +2,7 @@ import {CountSchema, repository} from '@loopback/repository';
 import {del, get, param, patch, post, requestBody} from '@loopback/rest';
 import {authenticate, STRATEGY} from 'loopback4-authentication';
 import {authorize} from 'loopback4-authorization';
-import {CountWithOptions, FindOptions, UpdateOptions} from 'sequelize/types';
+import {CountOptions, FindOptions, UpdateOptions} from 'sequelize/types';
 import {Tenant} from '../../models';
 import {TenantRepository} from '../../repositories';
 import {PermissionKey} from '../auth/permission-key.enum';
@@ -39,7 +39,7 @@ export class TenantController {
   })
   async count(
     @param.query.object('where')
-    where?: CountWithOptions<Tenant>,
+    where?: CountOptions<Tenant>,
   ): Promise<number> {
     return this.tenantRepository.count(where);
   }
